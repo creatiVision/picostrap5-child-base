@@ -1,0 +1,28 @@
+name: Sync with upstream Picostrap
+on:
+  schedule:
+    - cron: "17 4 * * *"   # daily, off-peak
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+      - name: Configure git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+      - name: Pull upstream
+        run: |
+          git remote add upstream https://github.com/${{ vars.UPSTREAM }}/${{ github.event.repository.name }}.git 2>/dev/null || true
+          git fetch upstream main
+      - name: Merge and push
+        run: |
+          git merge upstream/main --no-edit
+          git push origin main
