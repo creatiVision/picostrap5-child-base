@@ -1,36 +1,22 @@
 #!/bin/bash
+set -euo pipefail
 
-# Prompt the user for a version number
-echo "Releasing picostrap5"
-
-# Define a subfolder name and zip file name
+THEME_DIR="$(cd "$(dirname "$0")" && pwd)"
 SUBFOLDER="picostrap5-child-base"
-ZIP_NAME="picostrap5-child-base.zip"
+ZIP_NAME="$SUBFOLDER.zip"
+STAGING_DIR="$(mktemp -d)"
+trap 'rm -rf "$STAGING_DIR"' EXIT
 
-# Create the subfolder if it doesn't exist
-mkdir -p "$SUBFOLDER"
+mkdir -p "$STAGING_DIR/$SUBFOLDER"
+rsync -a \
+    --exclude=.git \
+    --exclude=.gitignore \
+    --exclude=.DS_Store \
+    --exclude="/$SUBFOLDER/" \
+    --exclude="/$ZIP_NAME" \
+    "$THEME_DIR/" "$STAGING_DIR/$SUBFOLDER/"
 
-# Copy the files into the subfolder, excluding unwanted files and directories
-rsync -av --exclude={.git,.gitignore,.DS_Store,picostrap5} ./ "$SUBFOLDER/"
-
-
-# Check if rsync was successful
-if [[ $? -ne 0 ]]; then
-  echo "File copy failed. Exiting."
-  exit 1
-fi
-
-# Zip the subfolder
-zip -r "$ZIP_NAME" "$SUBFOLDER/"
-
-# Check if zip was successful
-if [[ $? -ne 0 ]]; then
-  echo "Zipping failed. Exiting."
-  exit 1
-fi
-
-# Optionally, remove the subfolder after zipping
-rm -rf "$SUBFOLDER"
-
-# Confirm successful completion
-echo "Successfully created release: $ZIP_NAME"
+cd "$STAGING_DIR"
+zip -qr "$ZIP_NAME" "$SUBFOLDER/"
+mv "$ZIP_NAME" "$THEME_DIR/$ZIP_NAME"
+echo "Successfully created release: $THEME_DIR/$ZIP_NAME"
