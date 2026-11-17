@@ -4,11 +4,11 @@ A WordPress child theme for **Picostrap5** - providing a solid foundation for cu
 
 ## Overview
 
-This child theme extends the powerful **Picostrap5** parent theme, which is a modern WordPress starter theme built on **Bootstrap 5.3.8** featuring unique browser-based SASS compilation. No build tools required!
+This child theme extends the **Picostrap5** parent theme and includes **Bootstrap 5.3.9**, with browser-based SASS compilation. No build tools required!
 
 ### Key Features
 
-- ✅ **Bootstrap 5.3.6** integration with full SCSS customization
+- ✅ **Bootstrap 5.3.9** integration with full SCSS customization
 - ✅ **Browser-based SASS compilation** - no npm, webpack, or Node.js needed
 - ✅ **LiveCanvas page builder** blocks, sections, and templates included
 - ✅ **WooCommerce ready** with Bootstrap styling
@@ -44,7 +44,7 @@ This child theme extends the powerful **Picostrap5** parent theme, which is a mo
 ### SASS/CSS Customization
 
 1. **Edit SASS files** in the `/sass/` directory:
-   - `sass/custom.scss` - Your custom styles
+   - `sass/_custom.scss` - Your custom styles
    - `sass/main.scss` - Main compilation entry point
 
 2. **Compile SASS** via WordPress Customizer:
@@ -104,7 +104,7 @@ Customize Bootstrap variables through:
 
 ### Adding Custom Styles
 
-1. Edit `sass/custom.scss`
+1. Edit `sass/_custom.scss`
 2. Use WordPress Customizer to recompile
 3. Changes appear in `/css-output/bundle.css`
 
@@ -126,6 +126,8 @@ register_nav_menus( array(
 ```
 
 ## Deployment
+
+Current stable version: **4.0.2**. See [CHANGELOG.md](CHANGELOG.md) for release notes.
 
 ### Creating a Release
 
